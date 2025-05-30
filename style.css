@@ -1,61 +1,58 @@
-
-/* Altera o fundo da sidebar */
+/* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #2d93c6;
+    background-color: #2d6a4f;  /* Verde escuro */
 }
 
-/* Texto da sidebar */
 [data-testid="stSidebar"] * {
-    color: #fff !important;
+    color: #ffffff !important;
 }
 
-/* Fundo das opções selecionadas (os "chips" dos multiselects) */
+/* Chips dos multiselects */
 .stMultiSelect span[data-baseweb="tag"] {
     background-color: #ffffff !important;
-    color: #000000 !important;
+    color: #2d6a4f !important;
+    font-weight: bold;
 }
 
-/* Background lojas e produtos */
-/* Fundo branco e texto preto nas caixas de filtro (lojas e produtos) */
+/* Background dos selects */
 .st-bc {
     background-color: #ffffff !important;
 }
 
-/* Força texto preto em todos os elementos dentro da caixa */
-.st-bc    * {
+.st-bc * {
     color: #000000 !important;
 }
 
+/* Título da sidebar */
+section[data-testid="stSidebar"] h2 {
+    font-size: 1.8rem !important;
+}
 
-/* Sobrescrevendo o fundo do menu lateral */
+/* Labels dos filtros */
+section[data-testid="stSidebar"] p {
+    font-size: 1.2rem !important;
+}
+
+/* Fundo geral da aplicação */
+html, body, .main, .block-container {
+    background-color: #edf6f9 !important;  /* Azul acinzentado muito claro */
+    color: #000000 !important;
+}
+
+/* Títulos principais */
+h1, h2, h3 {
+    color: #1b4332 !important;  /* Verde escuro mais neutro */
+}
+
+/* Métricas destacadas */
+.stMetric {
+    background-color: #d8f3dc !important;
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+/* Barra de menu do option_menu (se visível em modo escuro) */
 .menu .container-xxl[data-v-5af006b8] {
     background-color: #ffffff !important;
     color: #000000 !important;
 }
-
-/* Cor do fundo do site */
-/* .en45cdb4, .e14ksaui0{
-    background-color: #909;
-} */
-
-/* Aumentar o tamanho do título do header */
-section[data-testid="stSidebar"] h2 {
-    font-size: 1.8rem !important; /* ou experimente 2rem */
-}
-
-/* Aumenta o tamanho das labels "Lojas" e "Produtos" na sidebar */
-section[data-testid="stSidebar"] p {
-    font-size: 1.05rem ;
-}
-
-
-.st-emotion-cache-1dtefog.e1kosxz22 p{
-    font-size: 1.1rem;
-}
-
-.st-emotion-cache-q8sj0.e1kosxz23{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
