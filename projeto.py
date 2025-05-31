@@ -65,9 +65,58 @@ def Home():
     with col2:
         st.metric("💧 Média de Consumo de Água", f"{media_agua:,.0f} L")
     with col3:
-        st.metric("💵 Receita Total", f"R$ {receita_total:,.2f}")
+        st.metric("💵 Receita Total", f"US$ {receita_total:,.2f}")
 
     st.markdown("---")
+    
+    st.title("📊 Análises Gráficas")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        fig_emissoes = px.bar(
+            df_filtrado,
+            x="Product_Type",
+            y="Greenhouse_Gas_Emissions",
+            color="Company",
+            title="Emissões de CO₂ por Tipo de Produto",
+            color_discrete_sequence=px.colors.qualitative.Plotly
+        )
+        st.plotly_chart(fig_emissoes, use_container_width=True)
+
+
+    with col2:
+        fig_agua = px.bar(
+            df_filtrado,
+            x="Product_Type",
+            y="Water_Consumption",
+            color="Company",
+            title="Consumo de Água por Tipo de Produto",
+            color_discrete_sequence=px.colors.qualitative.Plotly
+        )
+        st.plotly_chart(fig_agua, use_container_width=True)
+
+    col3, col4, col5 = st.columns(3)
+    with col3:
+        fig_linha = px.line(
+            df_filtrado.groupby("Production_Year").sum(numeric_only=True).reset_index(),
+            x="Production_Year",
+            y="Greenhouse_Gas_Emissions",
+            title="Evolução das Emissões ao Longo dos Anos",
+            markers=True,
+        )
+        st.plotly_chart(fig_linha, use_container_width=False)
+
+    with col4:
+        fig_rosca = px.pie(
+            data_frame= df_filtrado.groupby("Product_Type").size().reset_index(name='quantidade'),
+            values= "quantidade",
+            hole=0.5,
+            names='Product_Type',
+            labels={'Materials': 'Product_Type'},
+            title="Total de produtos"
+        )
+        st.plotly_chart(fig_rosca, use_container_width=True)
 
 # Gráficos
 def Graficos():
@@ -85,6 +134,7 @@ def Graficos():
             color_discrete_sequence=px.colors.qualitative.Plotly
         )
         st.plotly_chart(fig_emissoes, use_container_width=True)
+
 
     with col2:
         fig_agua = px.bar(
@@ -104,7 +154,7 @@ def Graficos():
         title="Evolução das Emissões ao Longo dos Anos",
         markers=True
     )
-    st.plotly_chart(fig_linha, use_container_width=True)
+    st.plotly_chart(fig_linha, use_container_width=False)
 
 # Menu lateral
 def sideBar():
