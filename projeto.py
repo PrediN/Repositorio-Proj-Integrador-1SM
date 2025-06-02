@@ -122,7 +122,7 @@ def Home():
 def Graficos():
     st.title("📊 Análises Gráficas")
 
-    col1, col2 = st.columns(2)
+    col1, col2 , col3 = st.columns(3)
 
     with col1:
         fig_emissoes = px.bar(
@@ -155,6 +155,30 @@ def Graficos():
         markers=True
     )
     st.plotly_chart(fig_linha, use_container_width=False)
+    
+    with col3:
+        # Agregar dados por companhia
+        df_agg = df_filtrado.groupby("Company").agg({
+            "Greenhouse_Gas_Emissions": "sum",
+            "Sales_Revenue": "sum"
+        }).reset_index()
+        
+        # Criar gráfico de dispersão com Plotly
+        fig = px.scatter(
+            df_agg,
+            x="Greenhouse_Gas_Emissions",
+            y="Sales_Revenue",
+            color="Company",
+            size= [8] * len(df_agg),
+            hover_data=["Company"],  # Mostrar nome da companhia ao passar o mouse
+            labels={
+                "Greenhouse_Gas_Emissions": "Emissões de Gases de Efeito Estufa (Toneladas CO2e)",
+                "Sales_Revenue": "Receita de Vendas (USD)",
+                "Company": "Companhia"
+            },
+            title="Vendas vs Emissões de Gases de Efeito Estufa por Companhia"
+        )
+        st.plotly_chart(fig, use_container_width=True)
 
 # Menu lateral
 def sideBar():
