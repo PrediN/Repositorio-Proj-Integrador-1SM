@@ -24,6 +24,23 @@ aplicar_estilo()
 # Carregar os dados
 df = pd.read_excel("dataBase.xlsx")
 
+# Traduzir tipos de produto para português (sem alterar o original)
+traducao_produtos = {
+    "Polyester": "Poliéster",
+    "Nylon": "Nylon",
+    "Recycled_Poly": "Poliéster Reciclado",
+    "Cotton": "Algodão",
+    "Synthetic_Blend": "Mistura Sintética",
+    "Organic_Cotton": "Algodão Orgânico",
+    "Microfiber": "Microfibra",
+    "Linen": "Linho",
+    "Tencel": "Tencel",
+    "Viscose": "Viscose",
+    "Wool": "Lã"
+}
+df["Tipo_Produto_PT"] = df["Product_Type"].map(traducao_produtos)
+
+
 # Sidebar - Filtros
 st.sidebar.header("Filtros")
 
@@ -36,8 +53,8 @@ empresas = st.sidebar.multiselect(
 
 produtos = st.sidebar.multiselect(
     "Tipos de Produto",
-    options=df["Product_Type"].unique(),
-    default=df["Product_Type"].unique(),
+    options=df["Tipo_Produto_PT"].unique(),
+    default=df["Tipo_Produto_PT"].unique(),
     key="produto"
 )
 
@@ -49,7 +66,7 @@ anos = st.sidebar.multiselect(
 )
 
 # Aplicar filtros
-df_filtrado = df.query("Company in @empresas and Product_Type in @produtos and Production_Year in @anos")
+df_filtrado = df.query("Company in @empresas and Tipo_Produto_PT in @produtos and Production_Year in @anos")
 
 # Página principal
 def Home():
@@ -76,7 +93,7 @@ def Home():
     with col1:
         fig_emissoes = px.bar(
             df_filtrado,
-            x="Product_Type",
+            x="Tipo_Produto_PT",
             y="Greenhouse_Gas_Emissions",
             color="Company",
             title="Emissões de CO₂ por Tipo de Produto",
@@ -88,7 +105,7 @@ def Home():
     with col2:
         fig_agua = px.bar(
             df_filtrado,
-            x="Product_Type",
+            x="Tipo_Produto_PT",
             y="Water_Consumption",
             color="Company",
             title="Consumo de Água por Tipo de Produto",
@@ -109,11 +126,11 @@ def Home():
 
     with col4:
         fig_rosca = px.pie(
-            data_frame= df_filtrado.groupby("Product_Type").size().reset_index(name='quantidade'),
+            data_frame= df_filtrado.groupby("Tipo_Produto_PT").size().reset_index(name='quantidade'),
             values= "quantidade",
             hole=0.5,
-            names='Product_Type',
-            labels={'Materials': 'Product_Type'},
+            names='Tipo_Produto_PT',
+            labels={'Materials': 'Tipo_Produto_PT'},
             title="Total de produtos"
         )
         st.plotly_chart(fig_rosca, use_container_width=True)
@@ -151,7 +168,7 @@ def Graficos():
     with col1:
         fig_emissoes = px.bar(
             df_filtrado,
-            x="Product_Type",
+            x="Tipo_Produto_PT",
             y="Greenhouse_Gas_Emissions",
             color="Company",
             title="Emissões de CO₂ por Tipo de Produto",
@@ -163,7 +180,7 @@ def Graficos():
     with col2:
         fig_agua = px.bar(
             df_filtrado,
-            x="Product_Type",
+            x="Tipo_Produto_PT",
             y="Water_Consumption",
             color="Company",
             title="Consumo de Água por Tipo de Produto",
